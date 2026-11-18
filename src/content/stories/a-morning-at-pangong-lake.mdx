@@ -1,0 +1,59 @@
+---
+title: "A Morning at the Lake That Changes Colour"
+excerpt: "I woke up at 5 a.m., wrapped in three jackets, to watch a lake turn from grey to every shade of blue I know."
+date: 2026-06-14
+cover: "../../assets/photos/lake-dawn.jpg"
+coverAlt: "A still mountain lake at dawn"
+destination: ladakh
+tags: ["Mountains", "Sunrise", "Photography"]
+featured: true
+sample: true
+---
+import Figure from '../../components/Figure.astro';
+import PhotoGrid from '../../components/PhotoGrid.astro';
+import Note from '../../components/Note.astro';
+import PullQuote from '../../components/PullQuote.astro';
+import FactBox from '../../components/FactBox.astro';
+import snow from '../../assets/photos/snow-peaks.jpg';
+import night from '../../assets/photos/night-sky.jpg';
+import valley from '../../assets/photos/valley-flowers.jpg';
+import hero from '../../assets/photos/hero-mountains.jpg';
+
+<FactBox facts={[
+  { label: 'Best time', value: 'June – September' },
+  { label: 'Altitude', value: 'Very high — rest a day first!' },
+  { label: 'Camera', value: 'Sample: add Gauri’s camera' },
+  { label: 'Pack', value: 'Warm layers, sunscreen, snacks' },
+]} />
+
+**SAMPLE STORY — this shows how an article will look.** Replace this text with Gauri's own story. It was so cold that my fingers forgot how to press the camera button. But I didn't care, because the lake in front of me was doing something magical.
+
+At first it was grey, like a sleepy pencil drawing. Then the sun peeked over the mountains and the water turned pale blue, then turquoise, then a deep blue that looked painted on.
+
+<Figure src={snow} alt="Snowy peaks above the lake" caption="The peaks caught the light first — the lake followed ten minutes later." wide />
+
+## Getting there
+
+The road twists and turns like a noodle. We stopped many times — partly for photos, partly because the views made everyone go quiet. Sample text continues here; this section is where Gauri explains the journey.
+
+<Note>
+Carry a small thermos of hot chocolate. Sunrise photos are much easier when your hands are warm!
+</Note>
+
+## The moment
+
+<PullQuote>The lake didn't just change colour. It changed how quiet the whole world felt.</PullQuote>
+
+I set my camera on a rock, held my breath, and took the photo you see at the top of this page. Sample paragraph — describe the feeling, the sounds, what the family said.
+
+<PhotoGrid caption="Three moods of the same valley." photos={[
+  { src: night, alt: 'Stars above the mountains' },
+  { src: valley, alt: 'Wildflowers in the valley' },
+  { src: snow, alt: 'Snow peaks in the afternoon' },
+]} />
+
+## What I learned
+
+Sample closing paragraph. Wake up early, be patient, and look at the same place for a long time — it will show you something new.
+
+<Figure src={hero} alt="Mountains glowing at sunset" caption="On the way back, the mountains turned pink." full />

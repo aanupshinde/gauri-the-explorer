@@ -1,0 +1,58 @@
+---
+import Base from '../layouts/Base.astro';
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import portrait from '../assets/photos/gauri-portrait.jpg';
+import coast from '../assets/photos/coast-sunset.jpg';
+const places = (await getCollection('destinations')).length;
+---
+<Base title="About Gauri" description="Meet Gauri — a young explorer and photographer who takes every photo on this site herself." image={portrait}>
+  <section class="wrap hero">
+    <div class="txt">
+      <p class="eyebrow">About me</p>
+      <h1>Hi! I'm Gauri <span class="hand">(the explorer)</span></h1>
+      <p class="lede">SAMPLE — replace with Gauri's introduction in her own voice: her age, where she's from, and the moment she fell in love with travelling and taking pictures.</p>
+    </div>
+    <div class="pic"><div class="photo-tilt"><Image src={portrait} alt="Gauri with her camera" widths={[400, 800]} sizes="(min-width: 900px) 400px, 80vw" /></div></div>
+  </section>
+
+  <section class="section-tight wrap facts">
+    <div><strong>{places}</strong><span>places explored</span></div>
+    <div><strong>100%</strong><span>photos by me</span></div>
+    <div><strong>∞</strong><span>questions asked</span></div>
+  </section>
+
+  <section class="wrap-read prose">
+    <h2>How it all started</h2>
+    <p>Sample paragraph — the first trip, the first camera, the first photo she was proud of.</p>
+    <h2>What I love to photograph</h2>
+    <p>Sample paragraph — mountains, animals, markets, people, skies?</p>
+    <h2>My explorer kit</h2>
+    <ul><li>Sample: camera name</li><li>Sample: favourite lens or phone</li><li>Sample: notebook &amp; pencils</li><li>Sample: snacks (very important)</li></ul>
+    <h2>Awards, features &amp; press</h2>
+    <p>Sample — list any awards, school features, newspaper mentions or exhibitions here.</p>
+  </section>
+
+  <section class="section wrap">
+    <div class="band">
+      <Image src={coast} alt="Sunset over the coast" widths={[800, 1600, 2400]} sizes="100vw" />
+      <div class="band-txt"><p class="hand">My dream?</p><h2>To photograph every continent before I grow up.</h2><a href="/contact/" class="btn btn-primary">Suggest a place <span class="arrow">→</span></a></div>
+    </div>
+  </section>
+</Base>
+<style>
+  .hero { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: clamp(32px, 6vw, 80px); align-items: center; padding-top: clamp(48px, 7vw, 96px); }
+  .hero h1 .hand { display: block; font-size: 0.5em; transform: rotate(-2deg); }
+  .pic { max-width: 400px; justify-self: center; }
+  .facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; text-align: center; border-block: 1px solid var(--line); margin-block: clamp(40px, 6vw, 72px); }
+  .facts strong { display: block; font-family: var(--font-display); font-size: var(--step-4); line-height: 1; color: var(--terracotta); }
+  .facts span { color: var(--muted); font-size: var(--step--1); }
+  .prose h2 { font-size: var(--step-2); margin-top: 1.6em; }
+  .prose li::marker { color: var(--marigold); }
+  .band { position: relative; border-radius: calc(var(--radius) * 1.4); overflow: hidden; color: var(--on-dark); min-height: 420px; display: grid; align-items: end; isolation: isolate; }
+  .band :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
+  .band::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgb(20 24 42 / 0.8), transparent 70%); z-index: -1; }
+  .band-txt { padding: clamp(28px, 5vw, 64px); max-width: 560px; }
+  .band-txt .hand { color: var(--marigold); margin: 0; }
+  @media (max-width: 800px) { .hero { grid-template-columns: 1fr; } }
+</style>

@@ -1,0 +1,7 @@
+# Old address  ->  New address   (one per line; lines starting with # are ignored)
+# Only needed for old pages whose address CHANGES. Pages that keep their old address
+# (via `permalink:` in the story file) need nothing here.
+# Examples:
+# /category/travel/            /stories/
+# /portfolio/                  /gallery/
+# /2021/05/ladakh-trip.html    /stories/a-morning-at-pangong-lake/

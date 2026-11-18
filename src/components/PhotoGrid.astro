@@ -1,0 +1,21 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+interface Props { photos: { src: ImageMetadata; alt: string }[]; caption?: string }
+const { photos, caption } = Astro.props;
+---
+<figure class="grid" data-count={photos.length}>
+  <div class="cells">
+    {photos.map((p) => <Image src={p.src} alt={p.alt} widths={[480, 800, 1200]} sizes="(min-width: 1100px) 550px, 50vw" />)}
+  </div>
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+<style>
+  .grid { width: min(1100px, 100vw - 2 * var(--gutter)); margin: 2.4em 0; margin-inline: calc(50% - min(550px, 50vw - var(--gutter))); }
+  .cells { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  [data-count='3'] .cells { grid-template-columns: 2fr 1fr; grid-template-rows: 1fr 1fr; }
+  [data-count='3'] .cells :global(img:first-child) { grid-row: span 2; }
+  .cells :global(img) { width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-sm); aspect-ratio: 4/3; }
+  [data-count='3'] .cells :global(img:first-child) { aspect-ratio: auto; }
+  figcaption { font-size: var(--step--1); color: var(--muted); margin-top: 0.7em; padding-left: 14px; border-left: 3px solid var(--marigold); }
+</style>

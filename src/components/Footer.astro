@@ -1,0 +1,51 @@
+---
+import { site } from '../data/site';
+const year = new Date().getFullYear();
+const socials = Object.entries(site.social).filter(([, url]) => url);
+---
+<footer class="footer">
+  <div class="wrap grid">
+    <div class="intro">
+      <p class="hand">Keep exploring!</p>
+      <p class="brand">Gauri the Explorer</p>
+      <p class="muted">{site.tagline}</p>
+      {socials.length > 0 && (
+        <ul class="social">
+          {socials.map(([name, url]) => <li><a href={url} rel="me noopener" target="_blank">{name}</a></li>)}
+        </ul>
+      )}
+    </div>
+    <nav aria-label="Footer">
+      <p class="label">Explore</p>
+      <ul>
+        {site.nav.map((i) => <li><a href={i.href}>{i.label}</a></li>)}
+        <li><a href="/rss.xml">RSS feed</a></li>
+      </ul>
+    </nav>
+    <div>
+      <p class="label">Every photo</p>
+      <p class="muted">on this site was taken by Gauri herself. Please ask before using any of them.</p>
+      <a class="btn btn-primary" href="/contact/">Say hello <span class="arrow">→</span></a>
+    </div>
+  </div>
+  <div class="wrap base">
+    <p>© {year} Gauri the Explorer. All photographs © Gauri. All rights reserved.</p>
+  </div>
+</footer>
+
+<style>
+  .footer { background: var(--ink); color: var(--on-dark); padding-top: clamp(56px, 8vw, 96px); margin-top: 0; }
+  @media (prefers-color-scheme: dark) { .footer { background: #0c0f1c; } }
+  .footer .muted { color: color-mix(in srgb, var(--on-dark) 70%, transparent); }
+  .grid { display: grid; grid-template-columns: 1.6fr 1fr 1.2fr; gap: 48px; }
+  .brand { font-family: var(--font-display); font-size: var(--step-2); margin: 0 0 0.3em; font-variation-settings: 'SOFT' 100, 'WONK' 1; }
+  .hand { margin: 0; color: var(--marigold); }
+  .label { font-size: var(--step--1); letter-spacing: 0.16em; text-transform: uppercase; font-weight: 700; color: var(--marigold); }
+  ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+  a { text-decoration: none; }
+  a:not(.btn):hover { color: var(--marigold); }
+  .social { display: flex; gap: 18px; margin-top: 16px; text-transform: capitalize; font-weight: 600; }
+  .base { border-top: 1px solid rgb(255 255 255 / 0.12); margin-top: 56px; padding-block: 24px; font-size: 0.85rem; color: color-mix(in srgb, var(--on-dark) 60%, transparent); }
+  .base p { margin: 0; }
+  @media (max-width: 760px) { .grid { grid-template-columns: 1fr; gap: 36px; } }
+</style>

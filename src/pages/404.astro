@@ -1,0 +1,15 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Lost?" noindex>
+  <section class="wrap lost">
+    <p class="hand">Oops! Even explorers get lost sometimes.</p>
+    <h1>This page wandered off the map.</h1>
+    <p class="lede">Let's find our way back.</p>
+    <div class="ctas"><a class="btn btn-primary" href="/">Go home <span class="arrow">→</span></a><a class="btn btn-ghost" href="/stories/">Read stories</a></div>
+  </section>
+</Base>
+<style>
+  .lost { min-height: 70vh; display: grid; align-content: center; justify-items: start; padding-block: 80px; }
+  .ctas { display: flex; gap: 14px; flex-wrap: wrap; }
+</style>

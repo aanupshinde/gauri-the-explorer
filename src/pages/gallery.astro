@@ -1,0 +1,85 @@
+---
+import Base from '../layouts/Base.astro';
+import { Image, getImage } from 'astro:assets';
+import { galleryPhotos, galleryPlaces } from '../data/gallery';
+const items = await Promise.all(
+  galleryPhotos.map(async (p) => ({ ...p, big: (await getImage({ src: p.src, width: 2000, format: 'webp' })).src }))
+);
+---
+<Base title="Photo gallery" description="Photography by Gauri the Explorer — every picture taken by Gauri herself.">
+  <section class="wrap head">
+    <p class="eyebrow">Gallery</p>
+    <h1>Through my lens</h1>
+    <p class="lede">Every single photo here, I took myself. Tap any photo to see it big.</p>
+  </section>
+  <section class="wrap">
+    <div class="filters" role="group" aria-label="Filter by place">
+      <button class="pill active" data-place="all">Everywhere</button>
+      {galleryPlaces.map((p) => <button class="pill" data-place={p}>{p}</button>)}
+    </div>
+    <div class="masonry">
+      {items.map((p, i) => (
+        <button class="tile" data-index={i} data-place-item={p.place} data-full={p.big} data-alt={p.alt} data-caption={p.caption ?? ''} data-where={p.place}>
+          <Image src={p.src} alt={p.alt} widths={[400, 700, 1000]} sizes="(min-width: 1100px) 33vw, (min-width: 600px) 50vw, 100vw" />
+          <span class="where">{p.place}</span>
+        </button>
+      ))}
+    </div>
+  </section>
+  <div class="section-tight"></div>
+
+  <dialog class="lightbox" aria-label="Photo viewer">
+    <button class="lb-close" aria-label="Close">×</button>
+    <button class="lb-nav prev" aria-label="Previous photo">‹</button>
+    <figure><img alt="" /><figcaption></figcaption></figure>
+    <button class="lb-nav next" aria-label="Next photo">›</button>
+  </dialog>
+</Base>
+<style>
+  .head { padding-top: clamp(48px, 7vw, 96px); padding-bottom: 24px; }
+  .filters { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 32px; }
+  .masonry { columns: 3 300px; column-gap: 14px; }
+  .tile { position: relative; display: block; width: 100%; margin: 0 0 14px; padding: 0; border: 0; background: var(--paper-2); border-radius: var(--radius-sm); overflow: hidden; cursor: zoom-in; break-inside: avoid; }
+  .tile :global(img) { width: 100%; transition: transform 0.8s var(--ease), filter 0.4s; }
+  .tile:hover :global(img) { transform: scale(1.04); }
+  .where { position: absolute; left: 12px; bottom: 12px; background: rgb(20 24 42 / 0.7); color: #fff; font-size: 0.75rem; font-weight: 700; padding: 4px 10px; border-radius: 999px; opacity: 0; transform: translateY(6px); transition: all 0.3s; }
+  .tile:hover .where, .tile:focus-visible .where { opacity: 1; transform: none; }
+  .tile[hidden] { display: none; }
+  .lightbox { width: 100vw; height: 100vh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: rgb(10 12 22 / 0.96); color: #fff; }
+  .lightbox[open] { display: grid; grid-template-columns: 64px 1fr 64px; align-items: center; }
+  .lightbox figure { margin: 0; display: grid; place-items: center; gap: 12px; height: 100vh; padding: 56px 0 24px; }
+  .lightbox img { max-width: 100%; max-height: calc(100vh - 120px); object-fit: contain; border-radius: 6px; }
+  .lightbox figcaption { text-align: center; font-size: 0.95rem; opacity: 0.85; }
+  .lb-nav, .lb-close { background: none; border: 0; color: #fff; font-size: 3rem; cursor: pointer; line-height: 1; opacity: 0.75; }
+  .lb-nav:hover, .lb-close:hover { opacity: 1; color: var(--marigold); }
+  .lb-close { position: absolute; top: 10px; right: 18px; font-size: 2.6rem; }
+  @media (max-width: 600px) { .lightbox[open] { grid-template-columns: 40px 1fr 40px; } }
+</style>
+<script>
+  const tiles = [...document.querySelectorAll<HTMLButtonElement>('.tile')];
+  const dlg = document.querySelector<HTMLDialogElement>('.lightbox')!;
+  const img = dlg.querySelector('img')!;
+  const cap = dlg.querySelector('figcaption')!;
+  let cur = 0;
+  const visible = () => tiles.filter((t) => !t.hidden);
+  const show = (t: HTMLButtonElement) => {
+    cur = visible().indexOf(t);
+    img.src = t.dataset.full!; img.alt = t.dataset.alt!;
+    cap.textContent = [t.dataset.where, t.dataset.caption].filter(Boolean).join(' — ');
+  };
+  const step = (d: number) => { const v = visible(); show(v[(cur + d + v.length) % v.length]); };
+  tiles.forEach((t) => t.addEventListener('click', () => { show(t); dlg.showModal(); }));
+  dlg.querySelector('.prev')!.addEventListener('click', () => step(-1));
+  dlg.querySelector('.next')!.addEventListener('click', () => step(1));
+  dlg.querySelector('.lb-close')!.addEventListener('click', () => dlg.close());
+  dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+  addEventListener('keydown', (e) => { if (!dlg.open) return; if (e.key === 'ArrowLeft') step(-1); if (e.key === 'ArrowRight') step(1); });
+  let x0 = 0;
+  dlg.addEventListener('touchstart', (e) => (x0 = e.touches[0].clientX), { passive: true });
+  dlg.addEventListener('touchend', (e) => { const dx = e.changedTouches[0].clientX - x0; if (Math.abs(dx) > 50) step(dx < 0 ? 1 : -1); });
+  const pills = document.querySelectorAll<HTMLButtonElement>('[data-place]');
+  pills.forEach((b) => b.addEventListener('click', () => {
+    pills.forEach((p) => p.classList.toggle('active', p === b));
+    tiles.forEach((t) => (t.hidden = b.dataset.place !== 'all' && t.dataset.placeItem !== b.dataset.place));
+  }));
+</script>

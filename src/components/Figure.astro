@@ -1,0 +1,19 @@
+---
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+interface Props { src: ImageMetadata; alt: string; caption?: string; wide?: boolean; full?: boolean }
+const { src, alt, caption, wide = false, full = false } = Astro.props;
+---
+<figure class:list={['fig', { wide, full }]}>
+  <Picture src={src} alt={alt} formats={['avif', 'webp']} widths={[640, 1024, 1600, 2400]} sizes={full ? '100vw' : wide ? '(min-width: 1100px) 1100px, 100vw' : '(min-width: 760px) 720px, 100vw'} />
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+<style>
+  .fig { margin: 2.2em 0; }
+  .fig :global(img) { width: 100%; border-radius: var(--radius); }
+  .wide { width: min(1100px, 100vw - 2 * var(--gutter)); margin-inline: calc(50% - min(550px, 50vw - var(--gutter))); }
+  .full { width: 100vw; margin-inline: calc(50% - 50vw); }
+  .full :global(img) { border-radius: 0; max-height: 92vh; object-fit: cover; }
+  figcaption { font-size: var(--step--1); color: var(--muted); margin-top: 0.7em; padding-left: 14px; border-left: 3px solid var(--marigold); }
+  .full figcaption { width: min(var(--read), 100% - 2 * var(--gutter)); margin-inline: auto; }
+</style>

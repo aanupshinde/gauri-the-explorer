@@ -1,0 +1,223 @@
+---
+import Base from '../layouts/Base.astro';
+import StoryCard from '../components/StoryCard.astro';
+import { Image, Picture } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import { destinationUrl } from '../lib/urls';
+import { site } from '../data/site';
+import hero from '../assets/photos/hero-mountains.jpg';
+import portrait from '../assets/photos/gauri-portrait.jpg';
+import { galleryPhotos } from '../data/gallery';
+
+const stories = (await getCollection('stories')).sort((a, b) => +b.data.date - +a.data.date);
+const destinations = await getCollection('destinations');
+const featured = stories.filter((s) => s.data.featured).slice(0, 3);
+const latest = stories.filter((s) => !featured.includes(s)).slice(0, 3);
+const mosaic = galleryPhotos.slice(0, 7);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: site.name,
+  url: `https://${site.domain}/`,
+  description: site.description,
+};
+---
+<Base overlayHeader image={hero} jsonLd={jsonLd}>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-img">
+      <Picture src={hero} alt="Mountains glowing at sunset, photographed by Gauri" formats={['avif', 'webp']} widths={[800, 1400, 2000, 2400]} sizes="100vw" loading="eager" fetchpriority="high" />
+    </div>
+    <div class="hero-shade"></div>
+    <div class="hero-content wrap">
+      <p class="hand hello">Hi, I'm Gauri!</p>
+      <h1>I explore the world<br /> &amp; photograph <span class="u">every bit</span> of it.</h1>
+      <p class="lede">{site.tagline}</p>
+      <div class="ctas">
+        <a href="/stories/" class="btn btn-primary">Read my stories <span class="arrow">→</span></a>
+        <a href="/gallery/" class="btn btn-ghost">See my photos</a>
+      </div>
+    </div>
+    <div class="stats wrap">
+      <div><strong>{destinations.length}</strong><span>places explored</span></div>
+      <div><strong>{stories.length}</strong><span>stories written</span></div>
+      <div><strong>{galleryPhotos.length}+</strong><span>photos by me</span></div>
+    </div>
+    <a href="#featured" class="scroll-cue" aria-label="Scroll to stories"><span></span></a>
+  </section>
+
+  <!-- FEATURED -->
+  <section id="featured" class="section wrap">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">Featured adventures</p>
+        <h2>Stories I can't stop telling</h2>
+      </div>
+      <a href="/stories/" class="btn btn-ghost">All stories <span class="arrow">→</span></a>
+    </div>
+    <div class="featured-grid">
+      {featured.map((s, i) => <StoryCard story={s} size={i === 0 ? 'lg' : 'md'} />)}
+    </div>
+  </section>
+
+  <!-- DESTINATIONS -->
+  <section class="dest-band section">
+    <div class="wrap section-head">
+      <div>
+        <p class="eyebrow">Where I've been</p>
+        <h2>Pick a place, any place</h2>
+      </div>
+      <a href="/destinations/" class="btn btn-ghost">Open the map <span class="arrow">→</span></a>
+    </div>
+    <div class="rail" tabindex="0" aria-label="Destinations">
+      {destinations.map((d) => (
+        <a href={destinationUrl(d)} class="dest">
+          <Image src={d.data.cover} alt={d.data.coverAlt} widths={[400, 700]} sizes="320px" />
+          <div class="dest-txt">
+            <span class="region">{d.data.region}</span>
+            <h3>{d.data.name}</h3>
+            <p>{d.data.tagline}</p>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- PHOTO MOSAIC -->
+  <section class="section wrap">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">Through my lens</p>
+        <h2>Every photo here, I took myself</h2>
+      </div>
+      <a href="/gallery/" class="btn btn-ghost">Full gallery <span class="arrow">→</span></a>
+    </div>
+    <div class="mosaic">
+      {mosaic.map((p, i) => (
+        <a href="/gallery/" class:list={['m', `m${i}`, 'photo', 'reveal']}>
+          <Image src={p.src} alt={p.alt} widths={[400, 800, 1200]} sizes="(min-width: 900px) 33vw, 50vw" />
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- MEET GAURI -->
+  <section class="meet section">
+    <div class="wrap meet-grid">
+      <div class="meet-photo reveal">
+        <div class="photo-tilt">
+          <Image src={portrait} alt="Gauri with her camera" widths={[400, 800]} sizes="(min-width: 900px) 420px, 80vw" />
+        </div>
+        <p class="hand cap">that's me! →</p>
+      </div>
+      <div class="meet-txt reveal">
+        <p class="eyebrow">Meet the explorer</p>
+        <h2>Small explorer, big curiosity</h2>
+        <p class="lede">Sample intro — replace with Gauri's own words. Who is she, when did she pick up a camera, and what does she love most about exploring?</p>
+        <p>Sample paragraph. A line or two about the places, people, animals and food that make her want to keep travelling.</p>
+        <a href="/about/" class="btn btn-primary">My story <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- LATEST -->
+  <section class="section wrap">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">Fresh from the trail</p>
+        <h2>Latest stories</h2>
+      </div>
+    </div>
+    <div class="latest-grid">
+      {latest.map((s) => <StoryCard story={s} />)}
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta wrap">
+    <div class="cta-inner reveal">
+      <p class="hand">Psst…</p>
+      <h2>Want to come along on the next adventure?</h2>
+      <p>Write to Gauri with questions, ideas, or a place she simply <em>has</em> to visit.</p>
+      <a href="/contact/" class="btn btn-primary">Send a message <span class="arrow">→</span></a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* HERO */
+  .hero { position: relative; min-height: 100svh; display: grid; align-items: end; color: var(--on-dark); overflow: hidden; isolation: isolate; }
+  .hero-img, .hero-shade { position: absolute; inset: 0; z-index: -1; }
+  .hero-img :global(img) { width: 100%; height: 100%; object-fit: cover; animation: kenburns 24s var(--ease) both; }
+  @keyframes kenburns { from { transform: scale(1.12); } to { transform: scale(1); } }
+  .hero-shade { background: linear-gradient(180deg, rgb(20 24 42 / 0.35) 0%, rgb(20 24 42 / 0) 30%, rgb(20 24 42 / 0.15) 55%, rgb(20 24 42 / 0.8) 100%); }
+  .hero-content { padding-top: 140px; padding-bottom: 32px; }
+  .hello { text-shadow: 0 2px 18px rgb(20 24 42 / 0.45); color: var(--marigold); font-size: clamp(1.8rem, 3vw, 2.6rem); margin: 0 0 0.2em; transform: rotate(-3deg); display: inline-block; }
+  .hero h1 { font-size: var(--step-5); max-width: 14ch; margin-bottom: 0.3em; text-shadow: 0 2px 30px rgb(0 0 0 / 0.25); }
+  .hero .u { background: linear-gradient(transparent 70%, rgb(242 164 58 / 0.75) 70%); padding: 0 0.08em; }
+  .hero .lede { color: var(--on-dark); max-width: 38ch; opacity: 0.92; }
+  .ctas { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 28px; }
+  .stats { display: grid; grid-template-columns: repeat(3, auto); justify-content: start; gap: clamp(24px, 6vw, 80px); padding-block: 28px 44px; border-top: 1px solid rgb(255 255 255 / 0.22); }
+  .stats strong { display: block; font-family: var(--font-display); font-size: var(--step-3); line-height: 1; font-weight: 600; }
+  .stats span { font-size: var(--step--1); opacity: 0.85; }
+  .scroll-cue { position: absolute; right: var(--gutter); bottom: 44px; width: 28px; height: 46px; border: 2px solid rgb(255 255 255 / 0.7); border-radius: 20px; }
+  .scroll-cue span { position: absolute; left: 50%; top: 8px; width: 4px; height: 8px; margin-left: -2px; border-radius: 2px; background: #fff; animation: cue 1.8s infinite; }
+  @keyframes cue { 0% { opacity: 0; transform: translateY(0); } 40% { opacity: 1; } 100% { opacity: 0; transform: translateY(16px); } }
+
+  /* FEATURED */
+  .featured-grid { display: grid; grid-template-columns: 1.55fr 1fr; grid-template-rows: auto auto; gap: clamp(24px, 3vw, 40px); }
+  .featured-grid > :global(:first-child) { grid-row: span 2; }
+
+  /* DESTINATIONS */
+  .dest-band { background: var(--paper-2); }
+  .rail { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(260px, 320px); gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: max(var(--gutter), calc((100vw - var(--max)) / 2)); padding: 4px max(var(--gutter), calc((100vw - var(--max)) / 2)) 24px; scrollbar-width: thin; }
+  .dest { position: relative; scroll-snap-align: start; aspect-ratio: 3 / 4; border-radius: var(--radius); overflow: hidden; color: var(--on-dark); text-decoration: none; display: block; }
+  .dest :global(img) { width: 100%; height: 100%; object-fit: cover; transition: transform 1s var(--ease); }
+  .dest::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 40%, rgb(20 24 42 / 0.85)); }
+  .dest:hover { color: var(--on-dark); }
+  .dest:hover :global(img) { transform: scale(1.06); }
+  .dest-txt { position: absolute; z-index: 1; left: 22px; right: 22px; bottom: 20px; }
+  .dest-txt h3 { font-size: var(--step-2); margin: 0.1em 0 0.2em; }
+  .dest-txt p { font-size: 0.9rem; margin: 0; opacity: 0.88; }
+  .region { font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 700; color: var(--marigold); }
+
+  /* MOSAIC */
+  .mosaic { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: clamp(140px, 17vw, 230px); gap: 12px; }
+  .m { display: block; }
+  .m0 { grid-column: span 2; grid-row: span 2; }
+  .m3 { grid-row: span 2; }
+  .m5 { grid-column: span 2; }
+  .m:hover :global(img) { transform: scale(1.05); }
+
+  /* MEET */
+  .meet { background: var(--teal); color: var(--on-dark); overflow: hidden; }
+  @media (prefers-color-scheme: dark) { .meet { background: #163d3b; } }
+  .meet .eyebrow { color: var(--marigold); }
+  .meet .lede { color: var(--on-dark); opacity: 0.92; }
+  .meet-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: clamp(40px, 7vw, 100px); align-items: center; }
+  .meet-photo { position: relative; max-width: 420px; justify-self: center; }
+  .cap { position: absolute; left: -10px; bottom: -30px; color: var(--marigold); transform: rotate(-6deg); }
+
+  .latest-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(24px, 3vw, 40px); }
+
+  /* CTA */
+  .cta { padding-bottom: clamp(56px, 9vw, 128px); }
+  .cta-inner { text-align: center; background: var(--marigold); color: #1b2238; border-radius: calc(var(--radius) * 1.6); padding: clamp(40px, 7vw, 88px) var(--gutter); background-image: radial-gradient(circle at 15% 20%, rgb(255 255 255 / 0.35), transparent 40%), radial-gradient(circle at 85% 90%, rgb(214 90 60 / 0.35), transparent 45%); }
+  .cta-inner h2 { max-width: 20ch; margin-inline: auto; }
+  .cta-inner .hand { color: var(--terracotta); margin: 0; }
+  .cta-inner .btn-primary { background: var(--ink); color: var(--paper); box-shadow: none; }
+  @media (prefers-color-scheme: dark) { .cta-inner .btn-primary { background: #1b2238; color: #fff8ee; } }
+
+  @media (max-width: 900px) {
+    .featured-grid, .latest-grid { grid-template-columns: 1fr; }
+    .featured-grid > :global(:first-child) { grid-row: auto; }
+    .meet-grid { grid-template-columns: 1fr; }
+    .mosaic { grid-template-columns: repeat(2, 1fr); }
+    .m0, .m5 { grid-column: span 2; }
+  }
+  @media (max-width: 560px) {
+    .stats { grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .scroll-cue { display: none; }
+  }
+</style>

@@ -1,0 +1,19 @@
+---
+interface Props { lat: number; lng: number; name: string }
+const { lat, lng, name } = Astro.props;
+---
+<div class="mini">
+  <div class="map" data-minimap data-lat={lat} data-lng={lng} data-name={name} role="region" aria-label={`Map of ${name}`}></div>
+  <p class="hand">I was here! 📍</p>
+</div>
+<style>
+  .mini { position: sticky; top: 96px; }
+  .map { aspect-ratio: 1; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+  .hand { margin-top: 10px; }
+</style>
+<script>
+  import { mountMap } from '../lib/map';
+  document.querySelectorAll<HTMLElement>('[data-minimap]').forEach((el) => {
+    mountMap(el, [{ lat: +el.dataset.lat!, lng: +el.dataset.lng!, name: el.dataset.name! }], 6);
+  });
+</script>

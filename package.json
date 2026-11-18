@@ -1,0 +1,23 @@
+{
+  "name": "gauritheexplorer",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build && node scripts/build-redirects.mjs",
+    "preview": "astro preview",
+    "placeholders": "node scripts/make-placeholders.mjs"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^8.1.6",
+    "@astrojs/rss": "^4.0.19",
+    "@astrojs/sitemap": "^3.7.5",
+    "@fontsource-variable/dm-sans": "^5.3.0",
+    "@fontsource-variable/fraunces": "^5.3.0",
+    "@fontsource/caveat": "^5.3.0",
+    "astro": "^7.4.12",
+    "leaflet": "^1.9.4",
+    "sharp": "^0.35.5"
+  }
+}

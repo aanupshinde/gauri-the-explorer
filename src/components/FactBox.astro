@@ -1,0 +1,18 @@
+---
+// Quick trip facts — appears at the top or end of a story.
+interface Props { facts: { label: string; value: string }[]; title?: string }
+const { facts, title = 'Trip at a glance' } = Astro.props;
+---
+<aside class="facts">
+  <p class="eyebrow">{title}</p>
+  <dl>
+    {facts.map((f) => (<div><dt>{f.label}</dt><dd>{f.value}</dd></div>))}
+  </dl>
+</aside>
+<style>
+  .facts { background: var(--teal-soft); border-radius: var(--radius); padding: 24px 28px; margin: 2.4em 0; }
+  .facts .eyebrow { color: var(--teal); }
+  dl { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 18px 24px; margin: 0; }
+  dt { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 700; color: var(--teal); }
+  dd { margin: 2px 0 0; font-weight: 600; }
+</style>

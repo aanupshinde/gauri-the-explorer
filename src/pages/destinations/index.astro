@@ -1,0 +1,66 @@
+---
+import Base from '../../layouts/Base.astro';
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import { destinationUrl } from '../../lib/urls';
+
+const destinations = (await getCollection('destinations')).sort((a, b) => a.data.name.localeCompare(b.data.name));
+const stories = await getCollection('stories');
+const count = (id: string) => stories.filter((s) => s.data.destination.id === id).length;
+const pins = destinations.map((d) => ({ lat: d.data.lat, lng: d.data.lng, name: d.data.name, tagline: d.data.tagline, href: destinationUrl(d) }));
+const regions = [...new Set(destinations.map((d) => d.data.region))];
+---
+<Base title="Destinations" description="Every place Gauri has explored — on an interactive map, with stories and photos from each one.">
+  <section class="wrap head">
+    <p class="eyebrow">Destinations</p>
+    <h1>Places I've explored</h1>
+    <p class="lede">Tap a pin on the map or pick a place below. Each one has my stories and photos.</p>
+  </section>
+  <div class="wrap"><div class="bigmap" data-bigmap data-pins={JSON.stringify(pins)} role="region" aria-label="Map of all destinations"></div></div>
+
+  <section class="section wrap">
+    <div class="filters" role="group" aria-label="Filter by region">
+      <button class="pill active" data-region="all">All</button>
+      {regions.map((r) => <button class="pill" data-region={r}>{r}</button>)}
+    </div>
+    <div class="grid">
+      {destinations.map((d) => (
+        <a href={destinationUrl(d)} class="dest reveal" data-region-item={d.data.region}>
+          <div class="photo"><Image src={d.data.cover} alt={d.data.coverAlt} widths={[480, 800]} sizes="(min-width: 900px) 33vw, 100vw" /></div>
+          <p class="region">{d.data.region}</p>
+          <h2>{d.data.name}</h2>
+          <p class="muted">{d.data.tagline}</p>
+          <p class="n">{count(d.id)} {count(d.id) === 1 ? 'story' : 'stories'} →</p>
+        </a>
+      ))}
+    </div>
+  </section>
+</Base>
+<style>
+  .head { padding-top: clamp(48px, 7vw, 96px); padding-bottom: 32px; }
+  .bigmap { height: clamp(340px, 56vh, 600px); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+  .filters { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 36px; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px 32px; }
+  .dest { text-decoration: none; color: inherit; }
+  .dest .photo { aspect-ratio: 4 / 3; margin-bottom: 16px; }
+  .dest:hover :global(img) { transform: scale(1.05); }
+  .dest h2 { font-size: var(--step-2); margin: 0.1em 0 0.2em; }
+  .dest:hover h2 { color: var(--terracotta); }
+  .region { font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 700; color: var(--terracotta); margin: 0; }
+  .n { font-weight: 700; color: var(--teal); font-size: 0.9rem; margin: 0; }
+  .dest[hidden] { display: none; }
+  @media (max-width: 900px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .grid { grid-template-columns: 1fr; } }
+</style>
+<script>
+  import { mountMap } from '../../lib/map';
+  const el = document.querySelector<HTMLElement>('[data-bigmap]');
+  if (el) mountMap(el, JSON.parse(el.dataset.pins!));
+  const pills = document.querySelectorAll<HTMLButtonElement>('[data-region]');
+  pills.forEach((b) => b.addEventListener('click', () => {
+    pills.forEach((p) => p.classList.toggle('active', p === b));
+    document.querySelectorAll<HTMLElement>('[data-region-item]').forEach((c) => {
+      c.hidden = b.dataset.region !== 'all' && c.dataset.regionItem !== b.dataset.region;
+    });
+  }));
+</script>
