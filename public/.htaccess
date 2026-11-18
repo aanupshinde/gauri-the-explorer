@@ -11,6 +11,25 @@ RewriteRule ^ https://gauritheexplorer.com%{REQUEST_URI} [L,R=301]
 </IfModule>
 
 # ---------- OLD-SITE REDIRECTS (301 = permanent, passes Google ranking) ----------
+# Old WordPress archive URLs (tags, author, feeds, wp-admin) → nearest new page
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule ^tag/.+$ /blog/ [L,R=301]
+RewriteRule ^author/.+$ /about-us/ [L,R=301]
+RewriteRule ^(\d{4})/(\d{2})/?$ /blog/ [L,R=301]
+RewriteRule ^(\d{4})/?$ /blog/ [L,R=301]
+RewriteRule ^feed/?$ /rss.xml [L,R=301]
+RewriteRule ^comments/feed/?$ /rss.xml [L,R=301]
+RewriteRule ^web-stories/feed/?$ /rss.xml [L,R=301]
+RewriteRule ^(.+)/feed/?$ /$1/ [L,R=301]
+RewriteRule ^(wp-sitemap|sitemap_index|post-sitemap|page-sitemap|category-sitemap|web-story-sitemap|sitemap)\.xml$ /sitemap-index.xml [L,R=301]
+RewriteCond %{QUERY_STRING} (^|&)p=\d+ [OR]
+RewriteCond %{QUERY_STRING} (^|&)page_id=\d+
+RewriteRule ^$ /? [L,R=301]
+RewriteCond %{QUERY_STRING} (^|&)s=([^&]+)
+RewriteRule ^$ /blog/? [L,R=301]
+</IfModule>
+
 # Generated from redirects.txt by scripts/build-redirects.mjs — do not edit between the markers.
 # BEGIN REDIRECTS
 # END REDIRECTS
@@ -27,6 +46,7 @@ ExpiresByType application/javascript "access plus 1 year"
 ExpiresByType image/avif "access plus 1 year"
 ExpiresByType image/webp "access plus 1 year"
 ExpiresByType image/jpeg "access plus 1 year"
+ExpiresByType image/png "access plus 1 year"
 ExpiresByType image/svg+xml "access plus 1 month"
 ExpiresByType font/woff2 "access plus 1 year"
 </IfModule>

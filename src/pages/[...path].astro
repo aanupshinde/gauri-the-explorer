@@ -1,6 +1,6 @@
 ---
-// Generates every story page and destination page at its URL —
-// either the old-site permalink (to keep SEO) or the new clean address.
+// Generates every story, destination and text page at its URL —
+// the old WordPress address where there is one (keeps Google ranking), otherwise a clean new one.
 import Base from '../layouts/Base.astro';
 import StoryCard from '../components/StoryCard.astro';
 import MiniMap from '../components/MiniMap.astro';
@@ -8,71 +8,84 @@ import { Picture, Image } from 'astro:assets';
 import { getCollection, getEntry, render, type CollectionEntry } from 'astro:content';
 import { storyUrl, destinationUrl, formatDate, readingTime } from '../lib/urls';
 import { galleryPhotos } from '../data/gallery';
-import { site } from '../data/site';
+import { site, categorySlug } from '../data/site';
 
 export async function getStaticPaths() {
+  const strip = (u: string) => u.replace(/^\/|\/$/g, '');
   const stories = await getCollection('stories');
   const destinations = await getCollection('destinations');
-  const strip = (u: string) => u.replace(/^\/|\/$/g, '');
+  const pages = await getCollection('pages');
   return [
     ...stories.map((s) => ({ params: { path: strip(storyUrl(s)) }, props: { kind: 'story' as const, entry: s } })),
     ...destinations.map((d) => ({ params: { path: strip(destinationUrl(d)) }, props: { kind: 'destination' as const, entry: d } })),
+    ...pages.map((p) => ({ params: { path: strip(p.data.permalink) }, props: { kind: 'page' as const, entry: p } })),
   ];
 }
 
 type Props =
   | { kind: 'story'; entry: CollectionEntry<'stories'> }
-  | { kind: 'destination'; entry: CollectionEntry<'destinations'> };
+  | { kind: 'destination'; entry: CollectionEntry<'destinations'> }
+  | { kind: 'page'; entry: CollectionEntry<'pages'> };
 
 const { kind, entry } = Astro.props as Props;
 const { Content } = await render(entry);
 const allStories = (await getCollection('stories')).sort((a, b) => +b.data.date - +a.data.date);
+const pageUrl = new URL(Astro.url.pathname, Astro.site).href;
+const share = encodeURIComponent(pageUrl);
 
 let story: CollectionEntry<'stories'> | undefined;
-let dest: CollectionEntry<'destinations'>;
+let dest: CollectionEntry<'destinations'> | undefined;
+let page: CollectionEntry<'pages'> | undefined;
 if (kind === 'story') {
   story = entry as CollectionEntry<'stories'>;
-  dest = (await getEntry(story.data.destination))!;
-} else {
+  dest = story.data.destination ? await getEntry(story.data.destination) : undefined;
+} else if (kind === 'destination') {
   dest = entry as CollectionEntry<'destinations'>;
+} else {
+  page = entry as CollectionEntry<'pages'>;
 }
 
 const related = story
-  ? allStories.filter((s) => s.id !== story!.id && (s.data.destination.id === dest.id || s.data.tags.some((t) => story!.data.tags.includes(t)))).slice(0, 3)
+  ? allStories.filter((s) => s.id !== story!.id && s.data.categories.some((c) => story!.data.categories.includes(c))).slice(0, 3)
   : [];
-const destStories = allStories.filter((s) => s.data.destination.id === dest.id);
-const destPhotos = galleryPhotos.filter((p) => p.place.toLowerCase() === dest.data.name.toLowerCase() || dest.data.name.toLowerCase().startsWith(p.place.toLowerCase())).slice(0, 6);
+if (story && related.length < 3) related.push(...allStories.filter((s) => s.id !== story!.id && !related.includes(s)).slice(0, 3 - related.length));
+const destStories = dest ? allStories.filter((s) => s.data.destination?.id === dest!.id) : [];
+const destPhotos = dest?.data.galleryPlace ? galleryPhotos.filter((p) => p.place === dest!.data.galleryPlace).slice(0, 9) : [];
 
-const pageUrl = new URL(Astro.url.pathname, Astro.site).href;
 const jsonLd = story
   ? {
       '@context': 'https://schema.org',
       '@type': 'BlogPosting',
       headline: story.data.title,
-      description: story.data.excerpt,
+      description: story.data.seoDescription ?? story.data.excerpt,
       datePublished: story.data.date.toISOString(),
       dateModified: (story.data.updated ?? story.data.date).toISOString(),
-      author: { '@type': 'Person', name: 'Gauri', url: `https://${site.domain}/about/` },
+      author: { '@type': 'Person', name: 'Gauri', url: `https://${site.domain}/about-us/` },
+      publisher: { '@type': 'Organization', name: site.name, url: `https://${site.domain}/` },
       mainEntityOfPage: pageUrl,
-      contentLocation: { '@type': 'Place', name: dest.data.name },
+      ...(dest ? { contentLocation: { '@type': 'Place', name: dest.data.name } } : {}),
     }
-  : {
-      '@context': 'https://schema.org',
-      '@type': 'TouristDestination',
-      name: dest.data.name,
-      description: dest.data.tagline,
-      geo: { '@type': 'GeoCoordinates', latitude: dest.data.lat, longitude: dest.data.lng },
-    };
-const share = encodeURIComponent(pageUrl);
+  : dest
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'TouristDestination',
+        name: dest.data.name,
+        description: dest.data.tagline,
+        geo: { '@type': 'GeoCoordinates', latitude: dest.data.lat, longitude: dest.data.lng },
+      }
+    : undefined;
 ---
-{story ? (
+{story && (
   <Base title={story.data.seoTitle ?? story.data.title} description={story.data.seoDescription ?? story.data.excerpt} image={story.data.cover} type="article" overlayHeader jsonLd={jsonLd} published={story.data.date}>
     <div class="progress" aria-hidden="true"><span data-progress></span></div>
     <header class="a-hero">
       <Picture src={story.data.cover} alt={story.data.coverAlt} formats={['avif', 'webp']} widths={[800, 1400, 2000, 2400]} sizes="100vw" loading="eager" fetchpriority="high" />
       <div class="a-shade"></div>
       <div class="a-head wrap-read">
-        <p class="a-meta"><a class="chip" href={destinationUrl(dest)}>{dest.data.name}</a> <span>{formatDate(story.data.date)}</span> · <span>{readingTime(story.body)} min read</span></p>
+        <p class="a-meta">
+          {story.data.categories.map((c) => <a class="chip" href={`/category/${categorySlug(c)}/`}>{c}</a>)}
+          <span>{formatDate(story.data.date)}</span> · <span>{readingTime(story.body)} min read</span>
+        </p>
         <h1>{story.data.title}</h1>
         <p class="lede">{story.data.excerpt}</p>
       </div>
@@ -81,57 +94,65 @@ const share = encodeURIComponent(pageUrl);
     <article class="prose wrap-read">
       <Content />
       <footer class="a-foot">
-        <ul class="tags">{story.data.tags.map((t) => <li><a class="chip" href={`/stories/?tag=${encodeURIComponent(t)}`}>#{t}</a></li>)}</ul>
+        {dest && <p class="where">📍 <a href={destinationUrl(dest)}>More from {dest.data.name} →</a></p>}
         <div class="share">
           <span class="muted">Share:</span>
           <a href={`https://wa.me/?text=${share}`} target="_blank" rel="noopener">WhatsApp</a>
           <a href={`https://www.facebook.com/sharer/sharer.php?u=${share}`} target="_blank" rel="noopener">Facebook</a>
           <a href={`https://pinterest.com/pin/create/button/?url=${share}`} target="_blank" rel="noopener">Pinterest</a>
+          <a href={`https://x.com/intent/post?url=${share}`} target="_blank" rel="noopener">X</a>
         </div>
         <div class="author">
-          <p class="hand">Written &amp; photographed by Gauri</p>
-          <a href="/about/">More about me →</a>
+          <p class="hand">Written by Gauri</p>
+          <a href="/about-us/">More about me →</a>
         </div>
       </footer>
     </article>
 
-    {related.length > 0 && (
-      <section class="section wrap">
-        <div class="section-head"><div><p class="eyebrow">Keep exploring</p><h2>You might also like</h2></div></div>
-        <div class="grid3">{related.map((s) => <StoryCard story={s} />)}</div>
-      </section>
-    )}
+    <section class="section wrap">
+      <div class="section-head"><div><p class="eyebrow">Keep exploring</p><h2>You might also like</h2></div></div>
+      <div class="grid3">{related.map((s) => <StoryCard story={s} />)}</div>
+    </section>
   </Base>
-) : (
-  <Base title={`${dest.data.name} travel stories & photos`} description={`${dest.data.tagline} Stories and photographs from ${dest.data.name} by Gauri the Explorer.`} image={dest.data.cover} overlayHeader jsonLd={jsonLd}>
+)}
+
+{kind === 'destination' && dest && (
+  <Base title={`${dest.data.name} travel stories & photos`} description={`${dest.data.tagline} Stories and photographs from ${dest.data.name} by Gauri The Explorer.`} image={dest.data.cover} overlayHeader jsonLd={jsonLd}>
     <header class="a-hero d-hero">
       <Picture src={dest.data.cover} alt={dest.data.coverAlt} formats={['avif', 'webp']} widths={[800, 1400, 2000, 2400]} sizes="100vw" loading="eager" fetchpriority="high" />
       <div class="a-shade"></div>
       <div class="a-head wrap">
         <p class="eyebrow light">{dest.data.region} · {dest.data.country}</p>
         <h1>{dest.data.name}</h1>
-        <p class="hand tag">{dest.data.tagline}</p>
+        <p class="tagline">{dest.data.tagline}</p>
       </div>
     </header>
     <section class="section wrap d-grid">
-      <div class="prose">
+      <div class="prose d-prose">
         <Content />
-        {dest.data.visited && <p class="muted">Best season I've been: <strong>{dest.data.visited}</strong></p>}
+        {destStories.length > 0 && (
+          <div class="d-stories">{destStories.map((s) => <StoryCard story={s} size="lg" />)}</div>
+        )}
       </div>
       <aside><MiniMap lat={dest.data.lat} lng={dest.data.lng} name={dest.data.name} /></aside>
     </section>
-    {destStories.length > 0 && (
-      <section class="section-tight wrap">
-        <div class="section-head"><div><p class="eyebrow">Stories from {dest.data.name}</p><h2>Read the adventures</h2></div></div>
-        <div class="grid3">{destStories.map((s) => <StoryCard story={s} />)}</div>
-      </section>
-    )}
     {destPhotos.length > 0 && (
-      <section class="section wrap">
-        <div class="section-head"><div><p class="eyebrow">Photos</p><h2>{dest.data.name} through my lens</h2></div><a class="btn btn-ghost" href="/gallery/">Full gallery <span class="arrow">→</span></a></div>
+      <section class="section-tight wrap">
+        <div class="section-head"><div><p class="eyebrow">Photos by Gauri</p><h2>{dest.data.name} through my lens</h2></div><a class="btn btn-ghost" href="/gallery/">Full gallery <span class="arrow">→</span></a></div>
         <div class="d-photos">{destPhotos.map((p) => <div class="photo"><Image src={p.src} alt={p.alt} widths={[400, 800]} sizes="(min-width: 900px) 33vw, 50vw" /></div>)}</div>
       </section>
     )}
+  </Base>
+)}
+
+{page && (
+  <Base title={page.data.title}>
+    <article class="prose wrap-read legal">
+      <p class="eyebrow">{site.name}</p>
+      <h1>{page.data.title}</h1>
+      {page.data.updated && <p class="muted">Last updated {formatDate(page.data.updated)}</p>}
+      <Content />
+    </article>
   </Base>
 )}
 
@@ -143,33 +164,41 @@ const share = encodeURIComponent(pageUrl);
   .d-hero { min-height: 72svh; }
   .a-hero > :global(picture), .a-hero > :global(picture img), .a-shade { position: absolute; inset: 0; z-index: -1; }
   .a-hero :global(img) { width: 100%; height: 100%; object-fit: cover; }
-  .a-shade { background: linear-gradient(180deg, rgb(20 24 42 / 0.3), rgb(20 24 42 / 0) 35%, rgb(20 24 42 / 0.82)); }
+  .a-shade { background: linear-gradient(180deg, rgb(20 24 42 / 0.35), rgb(20 24 42 / 0.05) 35%, rgb(20 24 42 / 0.85)); }
   .a-head { padding-block: 140px 56px; }
-  .a-head h1 { font-size: var(--step-4); }
+  .a-head h1 { font-size: var(--step-4); text-shadow: 0 2px 24px rgb(0 0 0 / 0.3); }
   .a-head .lede { color: var(--on-dark); opacity: 0.92; }
   .a-meta { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; font-size: 0.88rem; }
   .eyebrow.light { color: var(--marigold); }
-  .tag { color: var(--marigold); margin: 0; }
+  .tagline { font-size: var(--step-1); max-width: 40ch; opacity: 0.92; margin: 0; }
 
-  .prose { padding-block: clamp(40px, 6vw, 72px); font-size: clamp(1.05rem, 1rem + 0.25vw, 1.2rem); line-height: 1.75; }
-  .prose :global(> p:first-of-type::first-letter) { float: left; font-family: var(--font-display); font-size: 4.6em; line-height: 0.82; margin: 0.06em 0.1em 0 0; color: var(--terracotta); font-weight: 600; }
+  .prose { padding-block: clamp(40px, 6vw, 72px); font-size: clamp(1.05rem, 1rem + 0.25vw, 1.2rem); line-height: 1.75; overflow-wrap: anywhere; }
   .prose :global(h2) { font-size: var(--step-2); margin-top: 1.8em; }
-  .prose :global(ul) { padding-left: 1.2em; }
+  .prose :global(h3) { font-size: var(--step-1); margin-top: 1.6em; }
+  .prose :global(h4), .prose :global(h5), .prose :global(h6) { font-family: var(--font-display); font-size: var(--step-1); margin: 1.8em 0 0.5em; color: var(--teal); }
+  .prose :global(h5 strong), .prose :global(h4 strong) { font-weight: inherit; }
+  .prose :global(ul), .prose :global(ol) { padding-left: 1.2em; }
   .prose :global(li::marker) { color: var(--marigold); }
   .prose :global(blockquote) { margin: 2em 0; padding-left: 22px; border-left: 4px solid var(--marigold); font-family: var(--font-display); font-size: var(--step-1); color: var(--teal); }
-  .prose :global(img) { border-radius: var(--radius); }
+  .prose :global(img) { border-radius: var(--radius); margin: 2em auto 0.6em; width: 100%; height: auto; }
+  .prose :global(p:has(> img) + p > em:only-child) { display: block; font-size: var(--step--1); color: var(--muted); font-style: normal; padding-left: 14px; border-left: 3px solid var(--marigold); margin-top: -0.4em; }
+  .prose :global(table) { width: 100%; border-collapse: collapse; font-size: 0.95em; display: block; overflow-x: auto; }
+  .prose :global(th), .prose :global(td) { border-bottom: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; }
+  .prose :global(iframe) { width: 100%; aspect-ratio: 16 / 9; height: auto; border: 0; border-radius: var(--radius); }
+  .prose :global(a) { color: var(--teal); }
 
   .a-foot { margin-top: 3em; padding-top: 2em; border-top: 1px solid var(--line); display: grid; gap: 22px; }
-  .tags { display: flex; gap: 8px; flex-wrap: wrap; list-style: none; padding: 0; margin: 0; }
+  .where { margin: 0; font-weight: 600; }
   .share { display: flex; gap: 16px; flex-wrap: wrap; font-weight: 600; font-size: 0.92rem; }
   .author { background: var(--paper-2); border-radius: var(--radius); padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
   .author .hand { margin: 0; }
   .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(24px, 3vw, 40px); }
   .d-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: clamp(32px, 6vw, 80px); align-items: start; }
-  .d-grid .prose { padding-block: 0; }
-  .d-grid .prose :global(> p:first-of-type::first-letter) { all: unset; }
+  .d-prose { padding-block: 0; }
+  .d-stories { display: grid; gap: 40px; margin-top: 32px; }
   .d-photos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
   .d-photos .photo { aspect-ratio: 4 / 3; }
+  .legal h1 { font-size: var(--step-3); }
   @media (max-width: 900px) { .grid3, .d-grid { grid-template-columns: 1fr; } .d-photos { grid-template-columns: repeat(2, 1fr); } }
 </style>
 

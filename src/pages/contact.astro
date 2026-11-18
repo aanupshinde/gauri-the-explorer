@@ -2,13 +2,12 @@
 import Base from '../layouts/Base.astro';
 import { site } from '../data/site';
 ---
-<Base title="Contact" description="Write to Gauri the Explorer — questions, collaborations, or a place she should visit next.">
+<Base title="Contact" description="Write to Gauri The Explorer — questions, collaborations, or a place she should visit next.">
   <section class="wrap grid">
     <div>
       <p class="eyebrow">Contact</p>
       <h1>Say hello!</h1>
       <p class="lede">Questions about a trip, a place I should explore, or a collaboration? I'd love to hear from you.</p>
-      <p class="muted">Messages are read by Gauri's parents first, to keep things safe.</p>
       {site.email && <p>Or email: <a href={`mailto:${site.email}`}>{site.email}</a></p>}
     </div>
     <form class="form" method="post" action="/contact.php" data-form>

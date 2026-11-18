@@ -1,0 +1,19 @@
+---
+import Base from '../layouts/Base.astro';
+import StoryList from '../components/StoryList.astro';
+import { getCollection } from 'astro:content';
+const stories = (await getCollection('stories')).sort((a, b) => +b.data.date - +a.data.date);
+---
+<Base title="Travel Stories" description="All travel stories by Gauri The Explorer — spiritual journeys, heritage, wildlife and itineraries across India and beyond.">
+  <section class="wrap head">
+    <p class="eyebrow">Stories</p>
+    <h1>Every journey, written down</h1>
+    <p class="lede">Itineraries, heritage, wildlife and spiritual journeys from across Bharat and beyond.</p>
+  </section>
+  <section class="wrap"><StoryList stories={stories} /></section>
+  <div class="section-tight"></div>
+</Base>
+<style>
+  .head { padding-top: clamp(48px, 7vw, 96px); padding-bottom: 24px; }
+  .head h1 { max-width: 16ch; }
+</style>

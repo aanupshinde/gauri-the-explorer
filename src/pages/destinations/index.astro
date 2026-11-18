@@ -6,7 +6,7 @@ import { destinationUrl } from '../../lib/urls';
 
 const destinations = (await getCollection('destinations')).sort((a, b) => a.data.name.localeCompare(b.data.name));
 const stories = await getCollection('stories');
-const count = (id: string) => stories.filter((s) => s.data.destination.id === id).length;
+const count = (id: string) => stories.filter((s) => s.data.destination?.id === id).length;
 const pins = destinations.map((d) => ({ lat: d.data.lat, lng: d.data.lng, name: d.data.name, tagline: d.data.tagline, href: destinationUrl(d) }));
 const regions = [...new Set(destinations.map((d) => d.data.region))];
 ---
@@ -14,7 +14,7 @@ const regions = [...new Set(destinations.map((d) => d.data.region))];
   <section class="wrap head">
     <p class="eyebrow">Destinations</p>
     <h1>Places I've explored</h1>
-    <p class="lede">Tap a pin on the map or pick a place below. Each one has my stories and photos.</p>
+    <p class="lede">Tap a pin on the map or pick a place below to read the stories from it.</p>
   </section>
   <div class="wrap"><div class="bigmap" data-bigmap data-pins={JSON.stringify(pins)} role="region" aria-label="Map of all destinations"></div></div>
 

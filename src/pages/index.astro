@@ -5,8 +5,8 @@ import { Image, Picture } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import { destinationUrl } from '../lib/urls';
 import { site } from '../data/site';
-import hero from '../assets/photos/hero-mountains.jpg';
-import portrait from '../assets/photos/gauri-portrait.jpg';
+import hero from '../assets/wp/DSC_1777-scaled.jpg';
+import portrait from '../assets/wp/IMG_20240129_125223_564.webp';
 import { galleryPhotos } from '../data/gallery';
 
 const stories = (await getCollection('stories')).sort((a, b) => +b.data.date - +a.data.date);
@@ -27,13 +27,13 @@ const jsonLd = {
   <!-- HERO -->
   <section class="hero">
     <div class="hero-img">
-      <Picture src={hero} alt="Mountains glowing at sunset, photographed by Gauri" formats={['avif', 'webp']} widths={[800, 1400, 2000, 2400]} sizes="100vw" loading="eager" fetchpriority="high" />
+      <Picture src={hero} alt="Ganga Aarti at Assi Ghat, Varanasi, photographed by Gauri" formats={['avif', 'webp']} widths={[800, 1400, 2000, 2400]} sizes="100vw" loading="eager" fetchpriority="high" />
     </div>
     <div class="hero-shade"></div>
     <div class="hero-content wrap">
-      <p class="hand hello">Hi, I'm Gauri!</p>
-      <h1>I explore the world<br /> &amp; photograph <span class="u">every bit</span> of it.</h1>
-      <p class="lede">{site.tagline}</p>
+      <p class="hand hello">Namaste, I'm Gauri!</p>
+      <h1>Travel stories from <span class="u">Incredible Bharat</span></h1>
+      <p class="lede">Temples, holy cities, wildlife and heritage, written and photographed on the road.</p>
       <div class="ctas">
         <a href="/stories/" class="btn btn-primary">Read my stories <span class="arrow">→</span></a>
         <a href="/gallery/" class="btn btn-ghost">See my photos</a>
@@ -42,7 +42,7 @@ const jsonLd = {
     <div class="stats wrap">
       <div><strong>{destinations.length}</strong><span>places explored</span></div>
       <div><strong>{stories.length}</strong><span>stories written</span></div>
-      <div><strong>{galleryPhotos.length}+</strong><span>photos by me</span></div>
+      <div><strong>{galleryPhotos.length}</strong><span>photos in my gallery</span></div>
     </div>
     <a href="#featured" class="scroll-cue" aria-label="Scroll to stories"><span></span></a>
   </section>
@@ -107,15 +107,15 @@ const jsonLd = {
     <div class="wrap meet-grid">
       <div class="meet-photo reveal">
         <div class="photo-tilt">
-          <Image src={portrait} alt="Gauri with her camera" widths={[400, 800]} sizes="(min-width: 900px) 420px, 80vw" />
+          <Image src={portrait} alt="Gauri with her camera on a street at night" widths={[400, 800]} sizes="(min-width: 900px) 420px, 80vw" />
         </div>
         <p class="hand cap">that's me! →</p>
       </div>
       <div class="meet-txt reveal">
         <p class="eyebrow">Meet the explorer</p>
-        <h2>Small explorer, big curiosity</h2>
-        <p class="lede">Sample intro — replace with Gauri's own words. Who is she, when did she pick up a camera, and what does she love most about exploring?</p>
-        <p>Sample paragraph. A line or two about the places, people, animals and food that make her want to keep travelling.</p>
+        <h2>Student, traveller, storyteller</h2>
+        <p class="lede">{site.bio}</p>
+        <p>Join me as I blend travel, culture and photography to bring these incredible places to life.</p>
         <a href="/about/" class="btn btn-primary">My story <span class="arrow">→</span></a>
       </div>
     </div>
@@ -139,7 +139,7 @@ const jsonLd = {
     <div class="cta-inner reveal">
       <p class="hand">Psst…</p>
       <h2>Want to come along on the next adventure?</h2>
-      <p>Write to Gauri with questions, ideas, or a place she simply <em>has</em> to visit.</p>
+      <p>Questions about a trip, a collaboration, or a place I simply <em>have</em> to visit? Write to me.</p>
       <a href="/contact/" class="btn btn-primary">Send a message <span class="arrow">→</span></a>
     </div>
   </section>
@@ -151,7 +151,7 @@ const jsonLd = {
   .hero-img, .hero-shade { position: absolute; inset: 0; z-index: -1; }
   .hero-img :global(img) { width: 100%; height: 100%; object-fit: cover; animation: kenburns 24s var(--ease) both; }
   @keyframes kenburns { from { transform: scale(1.12); } to { transform: scale(1); } }
-  .hero-shade { background: linear-gradient(180deg, rgb(20 24 42 / 0.35) 0%, rgb(20 24 42 / 0) 30%, rgb(20 24 42 / 0.15) 55%, rgb(20 24 42 / 0.8) 100%); }
+  .hero-shade { background: linear-gradient(90deg, rgb(20 24 42 / 0.7) 0%, rgb(20 24 42 / 0.35) 45%, rgb(20 24 42 / 0) 75%), linear-gradient(180deg, rgb(20 24 42 / 0.35) 0%, rgb(20 24 42 / 0) 30%, rgb(20 24 42 / 0.15) 55%, rgb(20 24 42 / 0.8) 100%); }
   .hero-content { padding-top: 140px; padding-bottom: 32px; }
   .hello { text-shadow: 0 2px 18px rgb(20 24 42 / 0.45); color: var(--marigold); font-size: clamp(1.8rem, 3vw, 2.6rem); margin: 0 0 0.2em; transform: rotate(-3deg); display: inline-block; }
   .hero h1 { font-size: var(--step-5); max-width: 14ch; margin-bottom: 0.3em; text-shadow: 0 2px 30px rgb(0 0 0 / 0.25); }

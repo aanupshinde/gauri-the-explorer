@@ -1,0 +1,65 @@
+---
+import Base from '../layouts/Base.astro';
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import { site } from '../data/site';
+import { galleryPhotos } from '../data/gallery';
+import portrait from '../assets/wp/IMG_20240129_125223_564.webp';
+import band from '../assets/wp/DSC_1941-scaled.jpg';
+const places = (await getCollection('destinations')).length;
+const stories = (await getCollection('stories')).length;
+const jsonLd = { '@context': 'https://schema.org', '@type': 'AboutPage', mainEntity: { '@type': 'Person', name: 'Gauri', description: site.bio, url: `https://${site.domain}/about-us/` } };
+---
+<Base title="About Gauri" description={site.bio} image={portrait} jsonLd={jsonLd}>
+  <section class="wrap hero">
+    <div class="txt">
+      <p class="eyebrow">About me</p>
+      <h1>Namaste, I'm Gauri <span class="hand">(the explorer)</span></h1>
+      <p class="lede">{site.bio}</p>
+      <p>Join me as I blend travel, culture and photography to bring these incredible places to life!</p>
+    </div>
+    <div class="pic"><div class="photo-tilt"><Image src={portrait} alt="Gauri with her camera on a street at night" widths={[400, 800]} sizes="(min-width: 900px) 400px, 80vw" /></div></div>
+  </section>
+
+  <section class="section-tight wrap facts">
+    <div><strong>{stories}</strong><span>stories written</span></div>
+    <div><strong>{places}</strong><span>places on the map</span></div>
+    <div><strong>{galleryPhotos.length}</strong><span>photos in my gallery</span></div>
+  </section>
+
+  <section class="wrap-read prose">
+    <h2>About this blog</h2>
+    <p>It's a blog about the diverse and unique culture of Bharat. The country's tourism is growing because of its natural flora and fauna, its scenic beauty and topography, its food, one of the oldest civilizations, ancient history, vivid religious practices and its many spoken languages. Bharat is growing and developing vigorously as an Incredible Nation!</p>
+    <h2>What I write about</h2>
+    <ul>
+      <li><a href="/category/spiritual-journeys/">Spiritual journeys</a>: Varanasi, Haridwar, Rishikesh and ancient temples</li>
+      <li><a href="/category/wildlife/">Wildlife</a>: national parks, tiger reserves and bird sanctuaries</li>
+      <li><a href="/category/heritage/">Heritage</a>: forts, UNESCO sites and India's culture</li>
+      <li><a href="/category/explore-india/">Explore India</a>: itineraries, getaways and travel tips</li>
+    </ul>
+  </section>
+
+  <section class="section wrap">
+    <div class="band">
+      <Image src={band} alt="Kashi Vishwanath Corridor at night, photographed by Gauri" widths={[800, 1600, 2400]} sizes="100vw" />
+      <div class="band-txt"><p class="hand">Got a place in mind?</p><h2>Tell me where I should explore next.</h2><a href="/contact/" class="btn btn-primary">Get in touch <span class="arrow">→</span></a></div>
+    </div>
+  </section>
+</Base>
+<style>
+  .hero { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: clamp(32px, 6vw, 80px); align-items: center; padding-top: clamp(48px, 7vw, 96px); }
+  .hero h1 .hand { display: block; font-size: 0.5em; transform: rotate(-2deg); }
+  .pic { max-width: 400px; justify-self: center; }
+  .facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; text-align: center; border-block: 1px solid var(--line); margin-block: clamp(40px, 6vw, 72px); }
+  .facts strong { display: block; font-family: var(--font-display); font-size: var(--step-4); line-height: 1; color: var(--terracotta); }
+  .facts span { color: var(--muted); font-size: var(--step--1); }
+  .prose h2 { font-size: var(--step-2); margin-top: 1.6em; }
+  .prose li::marker { color: var(--marigold); }
+  .prose a { color: var(--teal); }
+  .band { position: relative; border-radius: calc(var(--radius) * 1.4); overflow: hidden; color: var(--on-dark); min-height: 440px; display: grid; align-items: end; isolation: isolate; }
+  .band :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
+  .band::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgb(20 24 42 / 0.85), transparent 75%); z-index: -1; }
+  .band-txt { padding: clamp(28px, 5vw, 64px); max-width: 560px; }
+  .band-txt .hand { color: var(--marigold); margin: 0; }
+  @media (max-width: 800px) { .hero { grid-template-columns: 1fr; } }
+</style>

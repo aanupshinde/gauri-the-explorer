@@ -1,7 +1,10 @@
-# Old address  ->  New address   (one per line; lines starting with # are ignored)
-# Only needed for old pages whose address CHANGES. Pages that keep their old address
-# (via `permalink:` in the story file) need nothing here.
-# Examples:
-# /category/travel/            /stories/
-# /portfolio/                  /gallery/
-# /2021/05/ladakh-trip.html    /stories/a-morning-at-pangong-lake/
+# Old address  ->  New address   (301 = permanent; Google moves the ranking to the new page)
+# Every blog post, category and legal page keeps its OLD address, so they need nothing here.
+/about/                        /about-us/
+/contact-us-2/                 /contact/
+/contact-us/                   /contact/
+/home-2026-teal/               /
+/home-2/                       /
+/web-stories/                  /blog/
+/category/explore-usa/         /blog/
+/stories/                      /blog/

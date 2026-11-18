@@ -1,0 +1,39 @@
+---
+title: "Is Our Bhartiya Culture and Heritage skating on thin ice?"
+excerpt: "n this modern and techno-savvy era, we human beings are lacking behind in acknowledging our roots and appreciating the wonders that our ancestors have granted us."
+date: 2023-08-03
+updated: 2026-09-27
+cover: "../../assets/wp/Is-Our-Bhartiya-Culture-and-Heritage-skating-on-thin-ice-gauri-the-explorer.webp"
+coverAlt: "Is Our Bhartiya Culture and Heritage skating on thin ice gauri the explore"
+categories: ["Heritage"]
+permalink: "/is-our-bhartiya-culture-and-heritage-skating-on-thin-ice/"
+seoTitle: "Is Our Bhartiya Culture And Heritage Skating On Thin Ice?"
+seoDescription: "n this modern and techno-savvy era, we human beings are lacking behind in acknowledging our roots and appreciating the wonders that our ancestors have granted us."
+featured: false
+---
+
+### **ACKNOWLEDGING AND  CONSERVING OUR RICH HERITAGE; IS THE NEED OF THE HOUR**!  
+
+        In this modern and techno-savvy era, we human beings are lacking behind in acknowledging our roots and appreciating the wonders that our ancestors have granted us. I don’t disagree that there are many of them, working on this with all their blood, sweat, and tears. I feel that in the upcoming era, we humans should not completely replace our culture with robots and machines; for a country is defined by the culture it beholds, or what the culture stands for, in the moral system of the people living there. Our culture, my dear friends is our very own identity. And I don’t think technology can take you that far.
+
+       It is Bharat where 3,500 years old Rigveda was created in Sanskrit. It is the sacred land of Bharat where our Culture is described as “Sa Prathama Sanskriti Vishwavara” which means the primary and supreme culture in the world. As said by various noblemen around the globe this rich land belongs to the most exceptional and greatest warriors, saints, kings, scientists, artists, and innovators of all time. There’s always a sense of pride when we talk about our motherland. Navigation has its origin in a Sanskrit word and the art of navigating in the rivers and seas was not only invented in Bharat but also was perfected here. The first navigators used the River Indus to hone their skills over 6,000 years ago! Movements like “**Incredible India**” are not only helping us in boosting our tourism industry but also it is successful, in adding one more crown to our Bharat Mata! It’s amazing to see that the number of tourists visiting Bharat has reached 12,25,672 by December 2019. And I hope the numbers soar high every day. We stand 40th out of 136 countries in the list of UNWTO along with almost 37 world heritage sites.
+
+![](https://1.bp.blogspot.com/-Bgsj7fjnkF4/Xwc0sSYdqtI/AAAAAAAAAFY/7dqaMXKoujg5fertKdSFrR__uv2AH1GrwCK4BGAsYHg/w164-h205/pexels-photo-894443%255B2%255D.jpg)
+
+ The natural gift of the Himalayas, the sacred rivers, divine temples, the sacred texts like the Vedas, Upanishads, and Bhagavat Gita. The treasure of rich biodiversity, the artistically built temples by those ancient architects and engineers, and the mighty forts built by those great kings like Chhatrapati Shivaji Maharaj. Our beloved Bharat is adorned with Kerala in the South, Nainital, Shimla, Himachal Pradesh in the North, “The Land of Dawn-lit Mountains” Arunachal Pradesh in the East, and the Sahayadris and Ghats to the West.  Although it is now being recognized at a greater scale than ever before, a major part of our country has not yet been discovered.
+
+ Bharat is full of mysteries, here every religion has something new to preach to you and give you, every person on every other street speaks a different language, every mother will have an authentic local recipe that you would have never tasted before, and every other place will have a story to tell you. God has blessed Bharat with some extraordinary gifts that no other country is gifted with.
+
+           On the other hand, according to Bharatiya Tourism Statistics 2019, only 2.7% of domestic tourists visited Rajasthan and 2.9% visited Gujrat. On the contrary, there are magnificent places like Odisha, Assam, Sikkim, Uttarakhand, Maharashtra, J&K, and Leh Ladakh which are not even in the top 10 in 2018. Since every coin has two sides our present government has taken some exceptional initiatives like the “Pariyatan Parv” to throw light onto the tourism of these offbeat places. The results are worth noticing because the GDP has grown to 9.2%! and continuing to grow even more in the upcoming years.
+
+          Well, it’s equally important to note that nowadays most of them love to explore high-class hotels, lavish resorts, beaches, etc. Now we want it to be all about spending money on modern waterparks, amusement parks, artificial snow worlds, gigantic shopping malls, watching movies in luxurious theatres, and much more. But it’s high time to ask yourself about the last time you visited a museum, enjoyed a street play or went to an auditorium to watch cultural programs, or went to observe and praise the intricate sculptures and cravings carved by the artists on those unprecedented temples when there were no machines, centuries ago. Ask yourself, at least once! You get to see those little children being inquisitive about their very own customs and traditions but their parents are too occupied to explain them about it. Don’t you think that if this situation continues our cultural aspect might go towards extinction? Hence, I find tourism as a legit path for enhancing and preserving our culture. 
+
+![](https://1.bp.blogspot.com/-laJgkuUW91o/Xwc1IhCJR2I/AAAAAAAAAFs/81dNUkvFm7818U4dXnDjrapUTXYy-OOeQCK4BGAsYHg/w205-h136/pexels-photo-1117808%255B2%255D.jpg)
+
+           Napolean Bonaparte says that even if you finish reading all the books in the world your knowledge will be counted as a tiny sand particle in that mighty ocean. Similarly, there are many places in this nature, in our country which are unexplored, where humans haven’t kept their feet on, which means there is so much more to be explored, to know, to travel & to learn. We can’t limit ourselves to what we have now we need to be visionary and curious. Let us join our hands together and do something exceptional to promote, preserve, boost, reinforce, elevate, and complement our Bharatiya Culture. I strongly say that there is no other country in this world that works functionally in chaos. The chaos in Bharat has its own organized rhythm. And when I say chaos it doesn’t refer to an unpleasant sound, whereas it stands for the unity in diversity factor. Bharat is the only country on this globe where you can see a person praying to Lord Shiva at that same place where the other two are praying to Allah and Jesus. 
+
+             Our big country has many interesting factors, aren’t these inspiring you to travel some more and know a bit more about our own country? It is said that good things take time. But it is our responsibility too, to put in our heart and soul and support Bhartiya tourism and take it to greater heights in the years to come. If the question is what can we do? The answer to that is very simple urge every person in your society, in your city to encourage “Domestic tourism” to support our heritage and our culture by strengthening our tourism sector. Primarily, by keeping those places NEAT and CLEAN. Because developing our tourism will not only aid our economy but also will help us to offer the world the values and morals of our Bharitya Culture.  
+
+          The future can take you to space, galaxies, and planets like Mars, give you millions of robots, give you a ride in electric cars, and build you huge complexes and buildings, but if not taken care of then it cannot take you to your roots, your ancient treasure, the history that built you or should I say your identity!
+
+     Namaste!🙏

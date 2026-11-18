@@ -1,0 +1,22 @@
+---
+import StoryCard from './StoryCard.astro';
+import { site, categorySlug } from '../data/site';
+import type { CollectionEntry } from 'astro:content';
+interface Props { stories: CollectionEntry<'stories'>[]; active?: string }
+const { stories, active } = Astro.props;
+const used = new Set(stories.flatMap((s) => s.data.categories));
+const cats = active ? site.categories : site.categories.filter((c) => used.has(c.name));
+---
+<nav class="filters" aria-label="Story categories">
+  <a class:list={['pill', { active: !active }]} href="/blog/">All stories</a>
+  {cats.filter((c) => c.slug !== 'uncategorised').map((c) => <a class:list={['pill', { active: active === c.slug }]} href={`/category/${c.slug}/`}>{c.name}</a>)}
+</nav>
+<div class="grid">{stories.map((s) => <StoryCard story={s} />)}</div>
+{stories.length === 0 && <p class="muted">No stories here yet.</p>}
+<style>
+  .filters { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 40px; }
+  .filters .pill { text-decoration: none; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px 32px; }
+  @media (max-width: 900px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .grid { grid-template-columns: 1fr; } }
+</style>

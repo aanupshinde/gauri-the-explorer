@@ -6,11 +6,11 @@ const items = await Promise.all(
   galleryPhotos.map(async (p) => ({ ...p, big: (await getImage({ src: p.src, width: 2000, format: 'webp' })).src }))
 );
 ---
-<Base title="Photo gallery" description="Photography by Gauri the Explorer — every picture taken by Gauri herself.">
+<Base title="Photo gallery" description="Travel photography by Gauri — Varanasi, Keoladeo, Haridwar, Rishikesh, Lonar and Vijaydurg.">
   <section class="wrap head">
     <p class="eyebrow">Gallery</p>
     <h1>Through my lens</h1>
-    <p class="lede">Every single photo here, I took myself. Tap any photo to see it big.</p>
+    <p class="lede">Every photo in this gallery, I took myself. Tap any photo to see it big.</p>
   </section>
   <section class="wrap">
     <div class="filters" role="group" aria-label="Filter by place">

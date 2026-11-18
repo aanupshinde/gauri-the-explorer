@@ -1,10 +1,10 @@
 ---
 import { Image } from 'astro:assets';
-import { getEntry, type CollectionEntry } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
 import { storyUrl, formatDate } from '../lib/urls';
 interface Props { story: CollectionEntry<'stories'>; size?: 'lg' | 'md' }
 const { story, size = 'md' } = Astro.props;
-const dest = await getEntry(story.data.destination);
+const label = story.data.categories[0];
 ---
 <article class:list={['card', size, 'reveal']}>
   <a href={storyUrl(story)} class="link">
@@ -12,7 +12,7 @@ const dest = await getEntry(story.data.destination);
       <Image src={story.data.cover} alt={story.data.coverAlt} widths={[480, 800, 1200]} sizes={size === 'lg' ? '(min-width: 900px) 60vw, 100vw' : '(min-width: 900px) 33vw, 100vw'} />
     </div>
     <div class="body">
-      <p class="meta"><span class="chip">{dest?.data.name}</span><span>{formatDate(story.data.date)}</span></p>
+      <p class="meta">{label && <span class="chip">{label}</span>}<span>{formatDate(story.data.date)}</span></p>
       <h3>{story.data.title}</h3>
       <p class="ex">{story.data.excerpt}</p>
     </div>

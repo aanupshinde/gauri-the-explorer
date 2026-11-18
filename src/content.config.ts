@@ -12,15 +12,13 @@ const stories = defineCollection({
       updated: z.coerce.date().optional(),
       cover: image(),
       coverAlt: z.string(),
-      destination: reference('destinations'),
-      tags: z.array(z.string()).default([]),
-      // Exact path of this article on the OLD site, e.g. "/2021/05/my-ladakh-trip/".
-      // Keeps every old link alive so Google ranking is not lost.
+      categories: z.array(z.string()).default([]),
+      destination: reference('destinations').optional(),
+      // The article's exact address on the OLD WordPress site — keeps Google ranking.
       permalink: z.string().optional(),
       seoTitle: z.string().optional(),
       seoDescription: z.string().optional(),
       featured: z.boolean().default(false),
-      sample: z.boolean().default(false),
     }),
 });
 
@@ -36,10 +34,15 @@ const destinations = defineCollection({
       cover: image(),
       coverAlt: z.string(),
       tagline: z.string(),
-      visited: z.string().optional(),
+      galleryPlace: z.string().optional(), // matches "place" in src/data/gallery.json
       permalink: z.string().optional(),
-      sample: z.boolean().default(false),
     }),
 });
 
-export const collections = { stories, destinations };
+// Simple text pages that keep their old URL (privacy policy, disclaimer…)
+const pages = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/pages' }),
+  schema: z.object({ title: z.string(), permalink: z.string(), updated: z.coerce.date().optional() }),
+});
+
+export const collections = { stories, destinations, pages };

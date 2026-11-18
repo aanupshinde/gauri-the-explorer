@@ -1,0 +1,22 @@
+---
+// Category pages at the same URLs as the old WordPress site (/category/heritage/ …)
+import Base from '../../layouts/Base.astro';
+import StoryList from '../../components/StoryList.astro';
+import { getCollection } from 'astro:content';
+import { site } from '../../data/site';
+export async function getStaticPaths() {
+  const stories = (await getCollection('stories')).sort((a, b) => +b.data.date - +a.data.date);
+  return site.categories.map((c) => ({ params: { slug: c.slug }, props: { cat: c, stories: stories.filter((s) => s.data.categories.includes(c.name)) } }));
+}
+const { cat, stories } = Astro.props;
+---
+<Base title={`${cat.name} travel stories`} description={`${cat.name}: travel stories and guides by Gauri The Explorer.`} noindex={stories.length === 0}>
+  <section class="wrap head">
+    <p class="eyebrow">Category</p>
+    <h1>{cat.name}</h1>
+    <p class="lede">{stories.length} {stories.length === 1 ? 'story' : 'stories'}</p>
+  </section>
+  <section class="wrap"><StoryList stories={stories} active={cat.slug} /></section>
+  <div class="section-tight"></div>
+</Base>
+<style>.head { padding-top: clamp(48px, 7vw, 96px); padding-bottom: 24px; }</style>
