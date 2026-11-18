@@ -32,7 +32,7 @@ If Google currently indexes the **www** version, flip that rule. The new site us
 
 ## Step 6 — Test before going live
 1. Upload `dist/` to a Hostinger **subdomain** first (e.g. `new.gauritheexplorer.com`), add `<meta name="robots" content="noindex">` there.
-2. Run the URL checker (`scripts/check-urls.mjs`, coming in the next step) — every old URL must return 200 or 301, never 404.
+2. Run the URL checker (`node scripts/check-urls.mjs old-urls.txt https://new.gauritheexplorer.com`) — every old URL must return 200 or 301, never 404.
 
 ## Step 7 — Go live
 1. hPanel → File Manager → `public_html` → move old files into a folder `old-site-backup/` (or keep WordPress installed but untouched).
