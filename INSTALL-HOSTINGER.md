@@ -1,7 +1,9 @@
 # gauritheexplorer.com — Hostinger वर नवीन साइट कशी चढवायची
 
-लागणारी फाइल: **gauritheexplorer-upload-to-hostinger.zip**
-(ही zip **unzip करायची नाही**. ती जशीच्या तशी Hostinger वर upload करायची.)
+लागणाऱ्या files: **5 zip files** (`gauritheexplorer-part1-of-5.zip` ते `gauritheexplorer-part5-of-5.zip`)
+- पाचही zip **एकाच फोल्डरमध्ये** upload करून Extract करायच्या. क्रम महत्त्वाचा नाही.
+- Computer वर unzip करायची गरज नाही. त्या जशाच्या तशा Hostinger वर upload करा.
+- `source-code.zip` आणि `source-photos-*.zip` फक्त backup साठी आहेत. त्या Hostinger वर टाकायच्या नाहीत.
 
 ---
 
@@ -22,8 +24,8 @@ Upload केल्यावर (पायरी 3 नंतर) File Manager �
 ## पायरी 2 — आधी test पत्त्यावर बघा (सुचवलेलं)
 1. hPanel → **Domains → Subdomains** → `new` नावाचा subdomain बनवा. पत्ता होईल `new.gauritheexplorer.com`.
 2. **Security → SSL** → त्या subdomain साठी SSL चालू करा.
-3. **File Manager** → `public_html/new/` फोल्डर उघडा → **Upload** → zip निवडा.
-4. zip वर right-click → **Extract** → "." (त्याच फोल्डरमध्ये) → मग zip delete करा.
+3. **File Manager** → `public_html/new/` फोल्डर उघडा → **Upload** → पाचही zip निवडा.
+4. प्रत्येक zip वर right-click → **Extract** → "." (त्याच फोल्डरमध्ये). "Replace / Overwrite" विचारलं तर **हो** म्हणा. पाचही झाल्यावर zip files delete करा.
 5. Browser मध्ये `https://new.gauritheexplorer.com` उघडून सगळी पानं बघा.
    - प्रत्येक पानाचा canonical पत्ता मुख्य domain चाच आहे, त्यामुळे test पत्त्याने Google ranking ला धोका नाही.
    - Test पत्त्यावर नकाशा, फोटो आणि लेख सगळं दिसलं पाहिजे.
@@ -37,7 +39,7 @@ Upload केल्यावर (पायरी 3 नंतर) File Manager �
    मग **Move** करून त्या सगळ्या `old-wordpress` मध्ये हलवा.
 4. `wp-content` फोल्डर उघडा. `uploads` **सोडून** बाकी सगळं (plugins, themes वगैरे) `old-wordpress` मध्ये हलवा.
    > ⚠️ **`public_html/wp-content/uploads/` delete करू नका.** Google Images मधले जुने फोटो, Pinterest pins आणि 3 Web Stories त्यावरच चालतात.
-5. `public_html` मध्ये zip upload करा → **Extract** → zip delete करा.
+5. `public_html` मध्ये पाचही zip upload करा → प्रत्येकावर **Extract** → मग zip files delete करा.
 6. पायरी 1 प्रमाणे `contact.php` मध्ये तुमचा email टाका.
 7. hPanel → **Advanced → Cache Manager** (LiteSpeed) → **Purge All**.
 
