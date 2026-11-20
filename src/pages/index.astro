@@ -27,7 +27,7 @@ const jsonLd = {
   <!-- HERO -->
   <section class="hero">
     <div class="hero-img">
-      <Picture src={hero} alt="Ganga Aarti at Assi Ghat, Varanasi, photographed by Gauri" formats={['avif', 'webp']} widths={[800, 1400, 2000, 2400]} sizes="100vw" loading="eager" fetchpriority="high" />
+      <Picture src={hero} alt="Ganga Aarti at Assi Ghat, Varanasi, photographed by Gauri" formats={['avif', 'webp']} fallbackFormat="jpg" widths={[800, 1400, 2000]} sizes="100vw" loading="eager" fetchpriority="high" />
     </div>
     <div class="hero-shade"></div>
     <div class="hero-content wrap">

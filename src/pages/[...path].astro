@@ -79,7 +79,7 @@ const jsonLd = story
   <Base title={story.data.seoTitle ?? story.data.title} description={story.data.seoDescription ?? story.data.excerpt} image={story.data.cover} type="article" overlayHeader jsonLd={jsonLd} published={story.data.date}>
     <div class="progress" aria-hidden="true"><span data-progress></span></div>
     <header class="a-hero">
-      <Picture src={story.data.cover} alt={story.data.coverAlt} formats={['avif', 'webp']} widths={[800, 1400, 2000, 2400]} sizes="100vw" loading="eager" fetchpriority="high" />
+      <Picture src={story.data.cover} alt={story.data.coverAlt} formats={['avif', 'webp']} fallbackFormat="jpg" widths={[800, 1400, 2000]} sizes="100vw" loading="eager" fetchpriority="high" />
       <div class="a-shade"></div>
       <div class="a-head wrap-read">
         <p class="a-meta">
@@ -119,7 +119,7 @@ const jsonLd = story
 {kind === 'destination' && dest && (
   <Base title={`${dest.data.name} travel stories & photos`} description={`${dest.data.tagline} Stories and photographs from ${dest.data.name} by Gauri The Explorer.`} image={dest.data.cover} overlayHeader jsonLd={jsonLd}>
     <header class="a-hero d-hero">
-      <Picture src={dest.data.cover} alt={dest.data.coverAlt} formats={['avif', 'webp']} widths={[800, 1400, 2000, 2400]} sizes="100vw" loading="eager" fetchpriority="high" />
+      <Picture src={dest.data.cover} alt={dest.data.coverAlt} formats={['avif', 'webp']} fallbackFormat="jpg" widths={[800, 1400, 2000]} sizes="100vw" loading="eager" fetchpriority="high" />
       <div class="a-shade"></div>
       <div class="a-head wrap">
         <p class="eyebrow light">{dest.data.region} · {dest.data.country}</p>
