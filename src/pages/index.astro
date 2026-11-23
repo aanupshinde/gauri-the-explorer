@@ -12,7 +12,7 @@ import { galleryPhotos } from '../data/gallery';
 const stories = (await getCollection('stories')).sort((a, b) => +b.data.date - +a.data.date);
 const destinations = await getCollection('destinations');
 const featured = stories.filter((s) => s.data.featured).slice(0, 3);
-const latest = stories.filter((s) => !featured.includes(s)).slice(0, 3);
+const latest = stories.filter((s) => !featured.includes(s)); // every other story, newest first
 const mosaic = galleryPhotos.slice(0, 7);
 
 const jsonLd = {
@@ -126,8 +126,9 @@ const jsonLd = {
     <div class="section-head">
       <div>
         <p class="eyebrow">Fresh from the trail</p>
-        <h2>Latest stories</h2>
+        <h2>More stories</h2>
       </div>
+      <a href="/blog/" class="btn btn-ghost">Browse by category <span class="arrow">→</span></a>
     </div>
     <div class="latest-grid">
       {latest.map((s) => <StoryCard story={s} />)}
