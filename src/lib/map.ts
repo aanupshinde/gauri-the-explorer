@@ -13,9 +13,10 @@ const icon = L.divIcon({
 
 export function mountMap(el: HTMLElement, pins: Pin[], zoom?: number) {
   const map = L.map(el, { scrollWheelZoom: false, attributionControl: true });
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>',
-    maxZoom: 18,
+  // OpenStreetMap standard tiles: free, no API key (attribution required).
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    maxZoom: 19,
   }).addTo(map);
   const markers = pins.map((p) => {
     const m = L.marker([p.lat, p.lng], { icon, title: p.name }).addTo(map);
