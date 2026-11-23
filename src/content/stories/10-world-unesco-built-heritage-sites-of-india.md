@@ -104,4 +104,4 @@ Dholavira is one of the five largest Harappan cities in India. that dates back t
 
 See another interesting article also
 
-[51-Year-old Lonar Mysterious Lake and Daitya Sudan mandir](/51000-year-old-lonar-lake/)
+[51-Year-old Lonar Mysterious Lake and Daitya Sudan mandir](/1300-year-old-daitya-sudan-mandir-lonar/)

@@ -78,4 +78,4 @@ The total cost of the trip per person depends on the mode of transport, accommod
 
 The Satpura Tiger Reserve is a must-visit destination for nature and wildlife enthusiasts. With its diverse flora and fauna, five unique zones, and thrilling safari experiences, it offers a once-in-a-lifetime experience that should not be missed
 
-See also[https://gauritheexplorer.com/glacier-national-park-natures-majestic-wonderland/](/glacier-national-park-natures-majestic-wonderland/)
+See also[https://gauritheexplorer.com/glacier-national-park-natures-majestic-wonderland/](/glacier-national-park-natures-majestic-wonderland-travel/)

@@ -8,3 +8,7 @@
 /web-stories/                  /blog/
 /category/explore-usa/         /blog/
 /stories/                      /blog/
+# Old WordPress slugs (WordPress redirected these automatically)
+/51000-year-old-lonar-lake/                       /1300-year-old-daitya-sudan-mandir-lonar/
+/exploring-the-wonders-of-satpura-tiger-reserve/  /satpura-tiger-reserve-travel/
+/glacier-national-park-natures-majestic-wonderland/ /glacier-national-park-natures-majestic-wonderland-travel/
