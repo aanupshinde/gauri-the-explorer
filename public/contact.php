@@ -1,10 +1,14 @@
 <?php
-// Contact form mailer for Hostinger (uses PHP mail()). Set the address that should receive messages:
-$TO = 'CHANGE-ME@example.com';
+// Contact form mailer for Hostinger (uses PHP mail()).
+// The receiving address lives in contact-email.txt next to this file. That file is NOT in GitHub,
+// so Git deploys never overwrite it. Create it once in Hostinger File Manager with just the email inside.
+$cfg = __DIR__ . '/contact-email.txt';
+$TO = is_readable($cfg) ? trim(file_get_contents($cfg)) : '';
 
 header('Content-Type: application/json');
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') { http_response_code(405); echo json_encode(['ok' => false]); exit; }
 if (!empty($_POST['website'])) { echo json_encode(['ok' => true]); exit; } // spam honeypot
+if (!filter_var($TO, FILTER_VALIDATE_EMAIL)) { echo json_encode(['ok' => false, 'error' => 'The contact form is not set up yet. Please try again later.']); exit; }
 
 $name = trim(strip_tags($_POST['name'] ?? ''));
 $email = filter_var(trim($_POST['email'] ?? ''), FILTER_VALIDATE_EMAIL);
