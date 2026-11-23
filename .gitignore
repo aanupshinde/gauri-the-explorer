@@ -3,3 +3,5 @@ dist/
 .astro/
 *.zip
 release/
+!updates/
+!updates/*.zip
