@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://gauritheexplorer.com/sitemap-index.xml

@@ -1,0 +1,1 @@
+import{t as e}from"./map.CxoPaHSz.js";document.querySelectorAll(`[data-minimap]`).forEach(t=>{e(t,[{lat:+t.dataset.lat,lng:+t.dataset.lng,name:t.dataset.name}],6)});
