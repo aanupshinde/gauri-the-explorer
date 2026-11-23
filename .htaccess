@@ -44,6 +44,9 @@ RewriteRule ^home-2/?$ / [L,R=301]
 RewriteRule ^web-stories/?$ /blog/ [L,R=301]
 RewriteRule ^category/explore-usa/?$ /blog/ [L,R=301]
 RewriteRule ^stories/?$ /blog/ [L,R=301]
+RewriteRule ^51000-year-old-lonar-lake/?$ /1300-year-old-daitya-sudan-mandir-lonar/ [L,R=301]
+RewriteRule ^exploring-the-wonders-of-satpura-tiger-reserve/?$ /satpura-tiger-reserve-travel/ [L,R=301]
+RewriteRule ^glacier-national-park-natures-majestic-wonderland/?$ /glacier-national-park-natures-majestic-wonderland-travel/ [L,R=301]
 </IfModule>
 # END REDIRECTS
 
